@@ -4,19 +4,19 @@
 
 ## Key Concepts
 
-* **User management** – the server stores users in a pickle file and supports sign‑up and login requests.  Passwords are hashed with a salt before storage and verified on login【758111208236503†screenshot】.
-* **Hybrid cryptography** – the client and server exchange RSA public keys to securely transmit an AES key.  Diffie–Hellman is used to derive a shared secret, which is then hashed to produce an AES key and IV.  Messages are encrypted/decrypted using AES in CBC mode via functions in `TCP_AES.py`【384210780469893†screenshot】.
+* **User management** – the server stores users in a pickle file and supports sign‑up and login requests.  Passwords are hashed with a salt before storage and verified on login.
+* **Hybrid cryptography** – the client and server exchange RSA public keys to securely transmit an AES key.  Diffie–Hellman is used to derive a shared secret, which is then hashed to produce an AES key and IV.  Messages are encrypted/decrypted using AES in CBC mode via functions in `TCP_AES.py`.
 * **Asynchronous messages** – the server maintains a thread‑safe dictionary of message queues for each connected client using the `AsyncMessages` class.  This allows threads handling different clients to communicate without locking the entire server【166510938047340†screenshot】.
-* **Custom protocol** – communication uses 3‑letter request codes (e.g. `LGN` for login, `SNU` for sign‑up, `GSR` for get server RSA key) and a size‑prefixed framing implemented in `tcp_by_size.py`.  The server parses requests and dispatches actions such as sending messages, retrieving users, or returning the server RSA key【225116358316511†screenshot】.
+* **Custom protocol** – communication uses 3‑letter request codes (e.g. `LGN` for login, `SNU` for sign‑up, `GSR` for get server RSA key) and a size‑prefixed framing implemented in `tcp_by_size.py`.  The server parses requests and dispatches actions such as sending messages, retrieving users, or returning the server RSA key.
 
 ## Repository Contents
 
-* **`gui_srv.py`** – the main server.  It listens on a TCP socket, handles login and sign‑up requests, performs the RSA/AES handshake and routes encrypted messages between clients.  User data is stored in `users_data.pkl`.  The server also supports requests to send messages to other clients and to retrieve the server RSA key【758111208236503†screenshot】【100381718921559†screenshot】.
-* **`gui_cli.py`** – a PyQt6 GUI client.  It displays fields for entering the server IP, username, password, Diffie–Hellman parameter and RSA key size.  Buttons allow the user to connect, sign up, log in and send messages.  Once connected, the client encrypts requests with AES and decrypts responses, updating the UI accordingly【563813420250439†screenshot】【592062054717848†screenshot】.
-* **`RSA.py`** – implements RSA key generation, encryption and decryption using PyCryptodome.  It wraps RSA key generation, allows setting a peer’s public key and converting keys to/from Base64【547777589298847†screenshot】.
-* **`TCP_AES.py`** – provides `Encrypt_AES` and `Decrypt_AES` functions that pad data, generate an IV and perform AES encryption/decryption using CBC mode【137027175740422†screenshot】.
-* **`AES_Decryption.py`** – helpers to send and receive data encrypted with AES over a socket.  It wraps `tcp_by_size.send_with_size()` and `recv_by_size()` to include AES encryption/decryption【710384601897236†screenshot】.
-* **`AsyncMessages.py`** – a thread‑safe message queue manager used by the server.  It allows multiple threads to push and pop messages associated with a client socket【166510938047340†screenshot】.
+* **`gui_srv.py`** – the main server.  It listens on a TCP socket, handles login and sign‑up requests, performs the RSA/AES handshake and routes encrypted messages between clients.  User data is stored in `users_data.pkl`.  The server also supports requests to send messages to other clients and to retrieve the server RSA key.
+* **`gui_cli.py`** – a PyQt6 GUI client.  It displays fields for entering the server IP, username, password, Diffie–Hellman parameter and RSA key size.  Buttons allow the user to connect, sign up, log in and send messages.  Once connected, the client encrypts requests with AES and decrypts responses, updating the UI accordingly.
+* **`RSA.py`** – implements RSA key generation, encryption and decryption using PyCryptodome.  It wraps RSA key generation, allows setting a peer’s public key and converting keys to/from Base64.
+* **`TCP_AES.py`** – provides `Encrypt_AES` and `Decrypt_AES` functions that pad data, generate an IV and perform AES encryption/decryption using CBC mode.
+* **`AES_Decryption.py`** – helpers to send and receive data encrypted with AES over a socket.  It wraps `tcp_by_size.send_with_size()` and `recv_by_size()` to include AES encryption/decryption.
+* **`AsyncMessages.py`** – a thread‑safe message queue manager used by the server.  It allows multiple threads to push and pop messages associated with a client socket.
 
 ## Running the Project
 
