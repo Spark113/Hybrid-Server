@@ -6,7 +6,7 @@
 
 * **User management** – the server stores users in a pickle file and supports sign‑up and login requests.  Passwords are hashed with a salt before storage and verified on login.
 * **Hybrid cryptography** – the client and server exchange RSA public keys to securely transmit an AES key.  Diffie–Hellman is used to derive a shared secret, which is then hashed to produce an AES key and IV.  Messages are encrypted/decrypted using AES in CBC mode via functions in `TCP_AES.py`.
-* **Asynchronous messages** – the server maintains a thread‑safe dictionary of message queues for each connected client using the `AsyncMessages` class.  This allows threads handling different clients to communicate without locking the entire server【166510938047340†screenshot】.
+* **Asynchronous messages** – the server maintains a thread‑safe dictionary of message queues for each connected client using the `AsyncMessages` class.  This allows threads handling different clients to communicate without locking the entire server.
 * **Custom protocol** – communication uses 3‑letter request codes (e.g. `LGN` for login, `SNU` for sign‑up, `GSR` for get server RSA key) and a size‑prefixed framing implemented in `tcp_by_size.py`.  The server parses requests and dispatches actions such as sending messages, retrieving users, or returning the server RSA key.
 
 ## Repository Contents
